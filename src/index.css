@@ -6,43 +6,38 @@
 
 @layer base {
   :root {
-    --background: 250 100% 97%;
-    --foreground: 260 30% 20%;
+    --background: 140 25% 94%;
+    --foreground: 0 0% 10%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 260 30% 20%;
+    --card: 0 0% 98%;
+    --card-foreground: 0 0% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 260 30% 20%;
+    --popover-foreground: 0 0% 10%;
 
-    --primary: 262 83% 58%;
+    --primary: 0 72% 51%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 199 89% 48%;
+    --secondary: 140 40% 45%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 250 50% 95%;
-    --muted-foreground: 260 20% 50%;
+    --muted: 0 0% 90%;
+    --muted-foreground: 0 0% 40%;
 
-    --accent: 25 95% 53%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 45 100% 50%;
+    --accent-foreground: 0 0% 10%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 250 30% 88%;
-    --input: 250 30% 88%;
-    --ring: 262 83% 58%;
+    --border: 0 0% 85%;
+    --input: 0 0% 90%;
+    --ring: 0 72% 51%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    --game-green: 142 76% 36%;
-    --game-red: 0 72% 51%;
-    --game-yellow: 45 93% 47%;
-    --game-purple: 262 83% 58%;
-    --game-orange: 25 95% 53%;
-    --game-pink: 330 81% 60%;
-    --game-blue: 199 89% 48%;
+    --board-bg: 140 25% 94%;
+    --board-border: 0 0% 30%;
   }
 }
 

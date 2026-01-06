@@ -128,23 +128,23 @@ const BOARD_PROPERTIES: Property[] = [
 ];
 
 const INITIAL_PLAYERS: Player[] = [
-  { id: 1, name: 'Игрок 1', color: '#8B5CF6', balance: 1500, position: 0 },
-  { id: 2, name: 'Игрок 2', color: '#0EA5E9', balance: 1500, position: 0 },
-  { id: 3, name: 'Игрок 3', color: '#F97316', balance: 1500, position: 0 },
-  { id: 4, name: 'Игрок 4', color: '#D946EF', balance: 1500, position: 0 },
+  { id: 1, name: 'Игрок 1', color: '#DC2626', balance: 1500, position: 0 },
+  { id: 2, name: 'Игрок 2', color: '#16A34A', balance: 1500, position: 0 },
+  { id: 3, name: 'Игрок 3', color: '#2563EB', balance: 1500, position: 0 },
+  { id: 4, name: 'Игрок 4', color: '#CA8A04', balance: 1500, position: 0 },
 ];
 
 const getColorClass = (color: PropertyColor) => {
   const colorMap = {
-    brown: 'bg-amber-800',
-    lightblue: 'bg-sky-400',
-    pink: 'bg-pink-400',
-    orange: 'bg-orange-500',
+    brown: 'bg-amber-900',
+    lightblue: 'bg-cyan-400',
+    pink: 'bg-pink-500',
+    orange: 'bg-orange-600',
     red: 'bg-red-600',
     yellow: 'bg-yellow-400',
     green: 'bg-green-600',
-    blue: 'bg-blue-600',
-    none: 'bg-gray-300'
+    blue: 'bg-blue-700',
+    none: 'bg-slate-200'
   };
   return colorMap[color];
 };
@@ -366,44 +366,55 @@ const Index = () => {
         key={property.id}
         onClick={() => setSelectedProperty(property)}
         className={`
-          relative p-2 rounded-lg border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg
-          ${isCurrentPlayerHere ? 'border-primary ring-4 ring-primary/30' : 'border-gray-200'}
-          ${property.type === 'special' || property.type === 'chance' ? 'bg-gradient-to-br from-yellow-100 to-orange-100' : 'bg-white'}
+          relative bg-white border-2 border-slate-700 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:z-10
+          ${isCurrentPlayerHere ? 'ring-4 ring-red-500' : ''}
+          ${property.type === 'special' || property.type === 'chance' ? 'bg-slate-100' : ''}
         `}
       >
         {property.color !== 'none' && (
-          <div className={`absolute top-0 left-0 right-0 h-2 ${getColorClass(property.color)} rounded-t-lg`} />
+          <div className={`h-8 ${getColorClass(property.color)} border-b-2 border-slate-700 flex items-center justify-center`}>
+            {property.price > 0 && (
+              <span className="text-white font-bold text-xs drop-shadow-md">₽{property.price}</span>
+            )}
+          </div>
         )}
         
-        <div className="text-center mt-1">
-          <Icon name={getPropertyIcon(property.type)} size={16} className="mx-auto mb-1 text-primary" />
-          <div className="text-[10px] font-medium line-clamp-2 mb-1">{property.name}</div>
-          {property.price > 0 && (
-            <div className="text-[10px] font-bold text-primary">₽{property.price}</div>
-          )}
+        <div className="p-2 min-h-[80px] flex flex-col justify-between">
+          <div className="text-center">
+            {(property.type === 'special' || property.type === 'chance') && (
+              <Icon name={getPropertyIcon(property.type)} size={20} className="mx-auto mb-1 text-slate-700" />
+            )}
+            <div className="text-xs font-bold line-clamp-2">{property.name}</div>
+          </div>
+          
           {property.owner && (
-            <Badge className="mt-1 h-4 text-[8px] px-1" style={{ backgroundColor: players.find(p => p.id === property.owner)?.color }}>
-              {players.find(p => p.id === property.owner)?.name}
-            </Badge>
+            <div className="mt-2 flex justify-center">
+              <div 
+                className="w-6 h-6 rounded border-2 border-white shadow-md"
+                style={{ backgroundColor: players.find(p => p.id === property.owner)?.color }}
+                title={players.find(p => p.id === property.owner)?.name}
+              />
+            </div>
           )}
+          
           {(property.houses > 0 || property.hotels > 0) && (
             <div className="flex gap-1 justify-center mt-1">
               {Array.from({ length: property.houses }).map((_, i) => (
-                <div key={i} className="w-2 h-2 bg-green-600 rounded" title="Дом" />
+                <div key={i} className="w-3 h-3 bg-green-600 border border-slate-700" title="Дом" />
               ))}
               {property.hotels > 0 && (
-                <div className="w-2 h-2 bg-red-600 rounded" title="Отель" />
+                <div className="w-3 h-4 bg-red-600 border border-slate-700" title="Отель" />
               )}
             </div>
           )}
         </div>
 
         {playersOnCell.length > 0 && (
-          <div className="absolute -top-1 -right-1 flex gap-0.5">
+          <div className="absolute top-1 right-1 flex flex-wrap gap-1 max-w-[40px]">
             {playersOnCell.map(player => (
               <div
                 key={player.id}
-                className="w-4 h-4 rounded-full border border-white shadow-lg animate-bounce-token"
+                className="w-5 h-5 rounded-full border-2 border-white shadow-lg animate-bounce-token"
                 style={{ backgroundColor: player.color }}
                 title={player.name}
               />
@@ -420,82 +431,82 @@ const Index = () => {
   const leftColumn = properties.slice(9, 18).reverse();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-orange-50 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-100 to-teal-50 p-4">
       <div className="max-w-7xl mx-auto">
         <header className="text-center mb-6 animate-fade-in">
-          <h1 className="text-5xl font-bold mb-2 bg-gradient-to-r from-purple-600 via-blue-600 to-orange-500 bg-clip-text text-transparent">
+          <h1 className="text-5xl font-bold mb-2 text-slate-800">
             Монополия
           </h1>
-          <p className="text-lg text-muted-foreground">Стройте империю и побеждайте!</p>
+          <p className="text-lg text-slate-600">Классическая настольная игра</p>
         </header>
 
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
           <div className="xl:col-span-3">
-            <Card className="p-4 animate-scale-in shadow-xl bg-gradient-to-br from-green-100 to-emerald-50">
-              <div className="aspect-square w-full max-w-3xl mx-auto">
-                <div className="grid grid-rows-[auto_1fr_auto] gap-1 h-full">
-                  <div className="grid grid-cols-9 gap-1">
-                    {topRow.map((prop, idx) => renderBoardCell(prop, prop.position))}
+            <div className="bg-emerald-200 p-6 rounded-xl shadow-2xl border-4 border-slate-700">
+              <div className="aspect-square w-full max-w-3xl mx-auto bg-emerald-100 border-4 border-slate-700 rounded-lg shadow-inner">
+                <div className="grid grid-rows-[auto_1fr_auto] gap-0 h-full">
+                  <div className="grid grid-cols-9 gap-0">
+                    {topRow.map((prop) => renderBoardCell(prop, prop.position))}
                   </div>
                   
-                  <div className="grid grid-cols-[auto_1fr_auto] gap-1">
-                    <div className="grid grid-rows-7 gap-1">
-                      {leftColumn.map((prop, idx) => renderBoardCell(prop, prop.position))}
+                  <div className="grid grid-cols-[auto_1fr_auto] gap-0">
+                    <div className="grid grid-rows-7 gap-0">
+                      {leftColumn.map((prop) => renderBoardCell(prop, prop.position))}
                     </div>
                     
-                    <div className="bg-gradient-to-br from-purple-100 via-blue-100 to-orange-100 rounded-xl p-6 flex flex-col items-center justify-center border-4 border-white shadow-inner">
-                      <h2 className="text-4xl font-bold mb-4 text-center bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
-                        Монополия
+                    <div className="bg-gradient-to-br from-emerald-50 to-teal-50 border-2 border-slate-700 p-8 flex flex-col items-center justify-center">
+                      <h2 className="text-5xl font-bold mb-6 text-center text-slate-800">
+                        МОНОПОЛИЯ
                       </h2>
                       
                       {diceValues && (
-                        <div className="flex gap-4 mb-4 animate-scale-in">
-                          <div className="w-16 h-16 bg-white rounded-xl shadow-xl flex items-center justify-center text-3xl font-bold text-primary border-2 border-primary animate-bounce-token">
+                        <div className="flex gap-4 mb-6 animate-scale-in">
+                          <div className="w-20 h-20 bg-white rounded-xl shadow-xl flex items-center justify-center text-4xl font-bold text-slate-800 border-4 border-slate-700 animate-bounce-token">
                             {diceValues[0]}
                           </div>
-                          <div className="w-16 h-16 bg-white rounded-xl shadow-xl flex items-center justify-center text-3xl font-bold text-primary border-2 border-primary animate-bounce-token">
+                          <div className="w-20 h-20 bg-white rounded-xl shadow-xl flex items-center justify-center text-4xl font-bold text-slate-800 border-4 border-slate-700 animate-bounce-token">
                             {diceValues[1]}
                           </div>
                         </div>
                       )}
                       
-                      <div className="text-center">
-                        <p className="text-lg font-semibold mb-2">Ходит:</p>
-                        <div className="flex items-center gap-3 bg-white rounded-lg p-3 shadow-lg">
+                      <div className="text-center bg-white rounded-lg p-4 shadow-lg border-2 border-slate-700">
+                        <p className="text-sm font-semibold text-slate-600 mb-2">Ходит:</p>
+                        <div className="flex items-center gap-3">
                           <div 
-                            className="w-10 h-10 rounded-full border-2 border-white shadow-lg"
+                            className="w-12 h-12 rounded-full border-3 border-white shadow-lg"
                             style={{ backgroundColor: currentPlayer.color }}
                           />
                           <div>
-                            <p className="font-bold text-lg">{currentPlayer.name}</p>
-                            <p className="text-xl font-bold text-primary">₽{currentPlayer.balance}</p>
+                            <p className="font-bold text-lg text-slate-800">{currentPlayer.name}</p>
+                            <p className="text-2xl font-bold text-red-600">₽{currentPlayer.balance}</p>
                           </div>
                         </div>
                       </div>
                     </div>
                     
-                    <div className="grid grid-rows-7 gap-1">
-                      {rightColumn.map((prop, idx) => renderBoardCell(prop, prop.position))}
+                    <div className="grid grid-rows-7 gap-0">
+                      {rightColumn.map((prop) => renderBoardCell(prop, prop.position))}
                     </div>
                   </div>
                   
-                  <div className="grid grid-cols-9 gap-1">
-                    {bottomRow.map((prop, idx) => renderBoardCell(prop, prop.position))}
+                  <div className="grid grid-cols-9 gap-0">
+                    {bottomRow.map((prop) => renderBoardCell(prop, prop.position))}
                   </div>
                 </div>
               </div>
-            </Card>
+            </div>
 
             {selectedProperty && (
-              <Card className="mt-6 p-6 animate-slide-in shadow-xl bg-gradient-to-br from-white to-purple-50">
+              <Card className="mt-6 p-6 animate-slide-in shadow-xl border-2 border-slate-700">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className={`w-12 h-12 rounded-full ${getColorClass(selectedProperty.color)} flex items-center justify-center`}>
-                      <Icon name={getPropertyIcon(selectedProperty.type)} size={24} className="text-white" />
+                    <div className={`w-14 h-14 rounded-lg ${getColorClass(selectedProperty.color)} flex items-center justify-center border-2 border-slate-700 shadow-md`}>
+                      <Icon name={getPropertyIcon(selectedProperty.type)} size={28} className="text-white" />
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold">{selectedProperty.name}</h3>
-                      <Badge variant="secondary">
+                      <h3 className="text-2xl font-bold text-slate-800">{selectedProperty.name}</h3>
+                      <Badge variant="secondary" className="bg-slate-200 text-slate-800">
                         {selectedProperty.type === 'property' ? 'Имущество' : 
                         selectedProperty.type === 'station' ? 'Вокзал' : 
                         selectedProperty.type === 'utility' ? 'Коммунальные услуги' : 
@@ -511,14 +522,14 @@ const Index = () => {
                 {selectedProperty.price > 0 && (
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="p-4 bg-white rounded-lg shadow-sm">
-                        <span className="text-sm text-muted-foreground">Цена:</span>
-                        <p className="text-xl font-bold text-primary">₽{selectedProperty.price}</p>
+                      <div className="p-4 bg-white rounded-lg shadow-sm border-2 border-slate-200">
+                        <span className="text-sm text-slate-600">Цена:</span>
+                        <p className="text-2xl font-bold text-slate-800">₽{selectedProperty.price}</p>
                       </div>
                       {selectedProperty.rent > 0 && (
-                        <div className="p-4 bg-white rounded-lg shadow-sm">
-                          <span className="text-sm text-muted-foreground">Аренда:</span>
-                          <p className="text-xl font-bold text-secondary">
+                        <div className="p-4 bg-white rounded-lg shadow-sm border-2 border-slate-200">
+                          <span className="text-sm text-slate-600">Аренда:</span>
+                          <p className="text-2xl font-bold text-green-600">
                             ₽{selectedProperty.rent * (1 + selectedProperty.houses + selectedProperty.hotels * 5)}
                           </p>
                         </div>
@@ -527,8 +538,8 @@ const Index = () => {
 
                     {selectedProperty.owner ? (
                       <div className="space-y-3">
-                        <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                          <p className="text-center text-green-700 font-medium">
+                        <div className="p-4 bg-green-50 rounded-lg border-2 border-green-200">
+                          <p className="text-center text-green-800 font-medium">
                             Владелец: {players.find(p => p.id === selectedProperty.owner)?.name}
                           </p>
                         </div>
@@ -537,16 +548,15 @@ const Index = () => {
                           <div className="grid grid-cols-2 gap-3">
                             <Button 
                               onClick={buildHouse} 
-                              className="h-12 font-semibold"
+                              className="h-12 font-semibold bg-green-600 hover:bg-green-700"
                               disabled={selectedProperty.houses >= 4 || selectedProperty.hotels > 0}
-                              variant="secondary"
                             >
                               <Icon name="Home" size={18} className="mr-2" />
                               Дом (₽50)
                             </Button>
                             <Button 
                               onClick={buildHotel} 
-                              className="h-12 font-semibold"
+                              className="h-12 font-semibold bg-red-600 hover:bg-red-700"
                               disabled={selectedProperty.houses < 4 || selectedProperty.hotels > 0}
                             >
                               <Icon name="Building2" size={18} className="mr-2" />
@@ -558,7 +568,7 @@ const Index = () => {
                     ) : (
                       <Button 
                         onClick={buyProperty} 
-                        className="w-full h-12 text-lg font-semibold"
+                        className="w-full h-12 text-lg font-semibold bg-red-600 hover:bg-red-700"
                         disabled={currentPlayer.balance < selectedProperty.price}
                       >
                         <Icon name="ShoppingCart" size={20} className="mr-2" />
@@ -572,8 +582,8 @@ const Index = () => {
           </div>
 
           <div className="space-y-6">
-            <Card className="p-6 animate-fade-in shadow-xl">
-              <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+            <Card className="p-6 animate-fade-in shadow-xl border-2 border-slate-700">
+              <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-slate-800">
                 <Icon name="Users" size={24} />
                 Игроки
               </h3>
@@ -586,24 +596,24 @@ const Index = () => {
                     <div 
                       key={player.id} 
                       className={`p-4 rounded-lg border-2 transition-all duration-300 ${
-                        isCurrentTurn ? 'border-primary bg-primary/5 shadow-lg scale-105' : 'border-gray-200 bg-white'
+                        isCurrentTurn ? 'border-red-600 bg-red-50 shadow-lg scale-105' : 'border-slate-300 bg-white'
                       }`}
                     >
                       <div className="flex items-center gap-3 mb-2">
                         <div 
-                          className="w-10 h-10 rounded-full border-2 border-white shadow-lg flex-shrink-0"
+                          className="w-12 h-12 rounded-full border-3 border-white shadow-lg flex-shrink-0"
                           style={{ backgroundColor: player.color }}
                         />
                         <div className="flex-1">
-                          <div className="font-semibold flex items-center gap-2">
+                          <div className="font-semibold text-slate-800 flex items-center gap-2">
                             {player.name}
-                            {isCurrentTurn && <Badge variant="secondary" className="text-xs">Ход</Badge>}
+                            {isCurrentTurn && <Badge className="text-xs bg-red-600">Ход</Badge>}
                           </div>
-                          <div className="text-2xl font-bold text-primary">₽{player.balance}</div>
+                          <div className="text-2xl font-bold text-green-600">₽{player.balance}</div>
                         </div>
                       </div>
                       {playerProps.length > 0 && (
-                        <div className="mt-2 text-sm text-muted-foreground">
+                        <div className="mt-2 text-sm text-slate-600">
                           <Icon name="Home" size={14} className="inline mr-1" />
                           {playerProps.length} {playerProps.length === 1 ? 'объект' : 'объектов'}
                         </div>
@@ -616,20 +626,20 @@ const Index = () => {
               <Button 
                 onClick={rollDice} 
                 disabled={isRolling}
-                className="w-full mt-6 h-12 text-lg font-semibold shadow-lg hover:shadow-xl transition-all"
+                className="w-full mt-6 h-12 text-lg font-semibold shadow-lg bg-red-600 hover:bg-red-700"
               >
                 <Icon name="Dices" size={20} className="mr-2" />
                 {isRolling ? 'Бросаем...' : 'Бросить кости'}
               </Button>
             </Card>
 
-            <Card className="p-6 animate-fade-in shadow-xl">
-              <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+            <Card className="p-6 animate-fade-in shadow-xl border-2 border-slate-700">
+              <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-slate-800">
                 <Icon name="MessageCircle" size={24} />
                 Чат
               </h3>
               
-              <ScrollArea className="h-64 mb-4 rounded-lg border bg-white/50 p-4">
+              <ScrollArea className="h-64 mb-4 rounded-lg border-2 border-slate-200 bg-white p-4">
                 <div className="space-y-3">
                   {chatMessages.map((msg) => {
                     const player = players.find(p => p.id === msg.playerId);
@@ -642,12 +652,12 @@ const Index = () => {
                           />
                           <div className="flex-1">
                             <div className="flex items-baseline gap-2 mb-1">
-                              <span className="font-semibold text-sm">{msg.playerName}</span>
-                              <span className="text-xs text-muted-foreground">
+                              <span className="font-semibold text-sm text-slate-800">{msg.playerName}</span>
+                              <span className="text-xs text-slate-500">
                                 {msg.timestamp.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}
                               </span>
                             </div>
-                            <p className="text-sm bg-white rounded-lg p-2 shadow-sm">{msg.message}</p>
+                            <p className="text-sm bg-slate-50 rounded-lg p-2 shadow-sm border border-slate-200">{msg.message}</p>
                           </div>
                         </div>
                       </div>
@@ -662,9 +672,9 @@ const Index = () => {
                   onChange={(e) => setNewMessage(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
                   placeholder="Напишите сообщение..."
-                  className="flex-1"
+                  className="flex-1 border-2 border-slate-300"
                 />
-                <Button onClick={sendMessage} size="icon" className="flex-shrink-0">
+                <Button onClick={sendMessage} size="icon" className="flex-shrink-0 bg-red-600 hover:bg-red-700">
                   <Icon name="Send" size={20} />
                 </Button>
               </div>
